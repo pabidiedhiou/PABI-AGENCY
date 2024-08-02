@@ -3,7 +3,8 @@ export default function Header() {
   return (
     <>
       <NavLink to="/">Home</NavLink>------
-      <NavLink to="/survey">survey</NavLink>
+      <NavLink to="/survey/7">survey</NavLink>------
+      <NavLink to="/freelances">Profils</NavLink>
     </>
   )
 }
