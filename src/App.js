@@ -5,6 +5,7 @@ import Survey from './pages/Survey/Survey'
 import Header from './components/header/index'
 import ClientForm from './components/ClientForm/ClientForm'
 import FreelanceForm from './components/FreelanceForm/FreelanceForm'
+//On s'arrête aux Outlets
 export default function App() {
   return (
     <>
