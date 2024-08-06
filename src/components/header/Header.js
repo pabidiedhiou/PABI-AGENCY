@@ -29,7 +29,7 @@ export default function Header() {
       </NavLink>
       <StyledNavLink to="/">Home</StyledNavLink>
 
-      <StyledNavLink to="/survey/7" $isFullLink>
+      <StyledNavLink to="/survey/1" $isFullLink>
         survey
       </StyledNavLink>
       <StyledNavLink to="/freelances">Profils</StyledNavLink>
