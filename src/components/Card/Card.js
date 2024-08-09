@@ -26,14 +26,14 @@ const CardWrapper = styled.div`
     box-shadow: 2px 2px 10px #e2e3e9;
   }
 `
-export default function Card({ label, nom, picture }) {
+export default function Card({ label, name, picture }) {
   return (
     <CardWrapper
       style={{ display: 'flex', flexDirection: 'column', padding: 15 }}
     >
       <CardLabel>{label}</CardLabel>
       <CardImage src={picture} alt="freelance" height={80} width={80} />
-      <span>{nom}</span>
+      <span>{name}</span>
     </CardWrapper>
   )
 }

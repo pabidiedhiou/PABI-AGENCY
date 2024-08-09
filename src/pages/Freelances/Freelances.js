@@ -37,7 +37,6 @@ export default function Freelances() {
         const response = await fetch(`http://localhost:8000/freelances`)
         const { freelancersList } = await response.json()
         setFreeLancersList(freelancersList)
-        console.log(freelancersList[1].name)
       } catch (error) {
         console.log('===== error =====', error)
         setError(true)
