@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { useParams, NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import Colors from '../../Utils/Style/Colors'
 import { Loader } from '../../Utils/Style/Atoms'
 import { SurveyContext } from '../../Utils/Context/Context'
+import { useFetch } from '../../Utils/Hooks/Hooks'
 const SurveyContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -54,40 +55,29 @@ export default function Survey() {
   const numeroQuestionPreced =
     numeroQuestionInt === 1 ? 1 : numeroQuestionInt - 1
   const numeroQuestionSuiv = numeroQuestionInt + 1
-  const [surveyData, setSurveyData] = useState({})
-  const [isDataLoading, setIsDataLoading] = useState(false)
+
+  const { data, isDataLoading, error } = useFetch(
+    `http://localhost:8000/survey`,
+  )
+  const { surveyData } = data
 
   const { saveAnswers, answers } = useContext(SurveyContext)
-  const [error, setError] = useState(false)
   function saveReply(answer) {
     saveAnswers({ [numeroQuestion]: answer })
   }
 
-  useEffect(() => {
-    setIsDataLoading(true)
-    fetch(`http://localhost:8000/survey`)
-      .then((data) =>
-        data.json().then((data) => {
-          setSurveyData(data.surveyData)
-          setIsDataLoading(false)
-        }),
-      )
-      .catch((error) => {
-        console.log(error)
-        setError(true)
-      })
-  }, [])
   if (error) {
-    return <span>Oups il y a eu un problème</span>
+    return <span>Il y'a un problème</span>
   }
-  console.log(`Answers: ${answers}`)
   return (
     <SurveyContainer>
       <QuestionTitle>Question {numeroQuestion}</QuestionTitle>
       {isDataLoading ? (
         <Loader />
       ) : (
-        <QuestionContent>{surveyData[numeroQuestion]}</QuestionContent>
+        <QuestionContent>
+          {surveyData && surveyData[numeroQuestion]}
+        </QuestionContent>
       )}
       {answers && (
         <ReplyWrapper>
@@ -107,7 +97,7 @@ export default function Survey() {
       )}
       <NavLinkWrapper>
         <NavLink to={`/survey/${numeroQuestionPreced}`}>Précédent</NavLink>
-        {surveyData[numeroQuestionInt + 1] ? (
+        {surveyData && surveyData[numeroQuestionInt + 1] ? (
           <NavLink to={`/survey/${numeroQuestionSuiv}`}>Suivant</NavLink>
         ) : (
           <NavLink to="/results">Résultats</NavLink>

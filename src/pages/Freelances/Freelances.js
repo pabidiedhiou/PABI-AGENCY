@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Card from '../../components/Card/Card'
 import Colors from '../../Utils/Style/Colors'
 import { Loader } from '../../Utils/Style/Atoms'
-import { useEffect, useState } from 'react'
+import { useFetch } from '../../Utils/Hooks/Hooks'
 const CardsContainer = styled.div`
   display: grid;
   gap: 24px;
@@ -27,27 +27,13 @@ const LoaderWrapper = styled.div`
   justify-content: center;
 `
 export default function Freelances() {
-  const [freeLancersList, setFreeLancersList] = useState([])
-  const [isDataLoading, setIsDataLoading] = useState(false)
-  const [error, setError] = useState(false)
-  useEffect(() => {
-    async function fetchFreelances() {
-      setIsDataLoading(true)
-      try {
-        const response = await fetch(`http://localhost:8000/freelances`)
-        const { freelancersList } = await response.json()
-        setFreeLancersList(freelancersList)
-      } catch (error) {
-        console.log('===== error =====', error)
-        setError(true)
-      } finally {
-        setIsDataLoading(false)
-      }
-    }
-    fetchFreelances()
-  }, [])
+  const { isDataLoading, data, error } = useFetch(
+    `http://localhost:8000/freelances`,
+  )
+
+  const freeLancersList = data.freelancersList
   if (error) {
-    return <span>Oh Désolé!!! Il y'a un problème</span>
+    return <span>Il y'a un problème !!</span>
   }
   return (
     <div>
@@ -61,14 +47,15 @@ export default function Freelances() {
         </LoaderWrapper>
       ) : (
         <CardsContainer>
-          {freeLancersList.map((profil, index) => (
-            <Card
-              key={`${profil.name}-${index}`}
-              label={profil.job}
-              name={profil.name}
-              picture={profil.picture}
-            />
-          ))}
+          {freeLancersList &&
+            freeLancersList.map((profil, index) => (
+              <Card
+                key={`${profil.name}-${index}`}
+                label={profil.job}
+                name={profil.name}
+                picture={profil.picture}
+              />
+            ))}
         </CardsContainer>
       )}
     </div>
