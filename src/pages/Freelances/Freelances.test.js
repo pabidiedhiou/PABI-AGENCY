@@ -37,7 +37,9 @@ function Wrapper({ children }) {
 
 it('Should render without crashing', async () => {
   render(<Freelances />, { wrapper: Wrapper })
+
   expect(screen.getByTestId('loader')).toBeTruthy()
+
   await waitFor(() => {
     expect(screen.getByText('Pabi Diédhiou')).toBeTruthy()
   })
